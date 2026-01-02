@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hkd.mapper.PersonMapper">
+
+<!-- person映射 -->
+<resultMap id="PersonResultMap" type="Person">
+    <id property="uid" column="id"/>
+    <result property="uname" column="name"/>
+    <result property="password" column="password"/>
+    <result property="sex" column="sex"/>
+    <result property="tel" column="tel"/>
+    <result property="status" column="status"/>
+</resultMap>
+
+
+<!-- 登录控制 -->
+
+<select id="Login" resultMap="PersonResultMap">
+
+    select * from user where id = #{id} and password = #{pwd} and status = #{status};
+    
+</select>
+
+<!-- 插入操作 -->
+<insert id="insertPerson" parameterType="person">
+
+insert into user (name,password,sex,tel,status) values (#{uname},#{password},#{sex},#{tel},#{status})
+
+</insert>
+
+
+</mapper>

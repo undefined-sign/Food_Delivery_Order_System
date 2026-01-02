@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+          
+<mapper namespace="com.hkd.mapper.order_viewMapper">
+	
+<!-- 映射 -->
+	<resultMap id="OrderViewResultMap" type="order_view">
+        <result property="uid" column="用户账号"/>
+        <result property="uname" column="用户名"/>
+        <result property="order_id" column="订单号"/>
+        <result property="category" column="类别"/>
+        <result property="address" column="地址"/>
+        <result property="dish_id" column="菜品编号"/>
+        <result property="dish_name" column="菜名"/>
+        <result property="num" column="数量"/>
+        <result property="price" column="单价"/>
+        <result property="status" column="状态"/>
+        <result property="time" column="下单日期"/>
+        <result property="sum" column="总金额"/>
+     </resultMap>   
+	
+<!-- 查询所有订单 --> 
+<select id="selectAllOrders" resultMap="OrderViewResultMap">
+    SELECT * FROM order_summary_view;
+</select>
+
+
+<!-- 查询未处理订单 -->
+<select id="selectOrders" resultMap="OrderViewResultMap">
+
+    SELECT
+    orders.id AS 订单号,
+    user.id AS 用户账号,
+    user.name AS 用户名,
+    orders.address AS 地址,
+    orders.order_time AS 下单日期,
+    orders.total_amount AS 总金额,
+    orders.STATUS AS 状态
+FROM
+    order_header AS orders
+JOIN
+    user ON orders.user_id = user.id 
+where orders.STATUS = '00';
+    
+</select>
+
+<!-- 按日期分组查询 -->
+
+<select id="selectOrdersByTime" resultMap="OrderViewResultMap">
+
+    SELECT  下单日期,SUM(总金额)as 总金额 
+    FROM order_summary_view 
+    where 状态='01' 
+    GROUP BY 下单日期
+    
+</select>
+
+
+<!-- 按菜品分组查询 -->
+<select id="selectOrdersByDish" resultMap="OrderViewResultMap">
+
+    SELECT 菜名,sum(数量)as 数量,SUM(总金额)as 总金额 
+    FROM order_summary_view 
+    where 状态='01' 
+    GROUP BY 菜名 
+    ORDER BY SUM(总金额) DESC
+    
+</select>
+
+<!-- 按订单号查询 -->
+
+<select id="selectOrdersByOid" resultMap="OrderViewResultMap" >
+
+    SELECT * 
+    FROM order_summary_view 
+    WHERE 用户账号=#{uid} AND 订单号=#{order_id}
+    
+</select>
+
+<!-- 按用户编号查询 -->
+<select id="selectOrdersByUid2" resultMap="OrderViewResultMap" >
+
+    SELECT * FROM order_summary_view WHERE 用户账号=#{uid}
+</select>
+
+	
+</mapper>          

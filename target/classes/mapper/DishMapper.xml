@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hkd.mapper.DishMapper">
+
+<!-- Dish映射 -->
+<resultMap id="DishResultMap" type="Dish">
+    <id property="dish_id" column="id"/>
+    <result property="dish_name" column="dish_name"/>
+    <result property="price" column="price"/>
+        <result property="category_id" column="category_id"/>
+    <result property="quantity" column="quity"/>
+    
+</resultMap>    
+
+<!--查询所有信息  -->
+<select id="selectAllDishes" resultMap="DishResultMap">
+    
+    select * from menu;
+</select>
+ 
+  <!-- 根据category_id查询菜品信息  -->
+ <select id="getDishesByCId" parameterType="int" resultMap="DishResultMap">
+     
+    select * from menu where category_id = #{category_id};
+    
+ </select>
+ 
+ <!-- 根据dish_id查询单个菜品信息  -->
+<select id="getDishByid" parameterType="int" resultMap="DishResultMap">
+     
+    select * from menu where id = #{dish_id};
+    
+ </select>
+ 
+ 
+ <!-- 更新菜品信息  -->
+ <update id="updateDish">
+    update menu set dish_name=#{dish_name},price=#{price},quity=#{quantity} where id=#{dish_id};
+ </update>
+
+ 
+ <!-- 添加菜品 -->
+ <insert id="insertDish" >
+
+    insert into menu(dish_name,price,category_id,quity) values (#{dish_name},#{price},#{category_id},#{quantity});   
+   </insert> 
+
+<!-- 模糊查询 -->
+    <select id="getDishesBypage" resultMap="DishResultMap">
+        
+        select * from menu where dish_name like concat("%",#{pname},"%") limit #{offset},5;
+        
+    </select>
+
+<!-- 统计模糊查询数目 -->
+    <select id="count" parameterType="string" resultType="int">
+        
+        select count(*) from menu where dish_name like concat("%",#{pname},"%");
+        
+    </select>
+
+</mapper>
