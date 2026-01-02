@@ -37,7 +37,7 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	
-<!-- 拦截所有jsp请求 -->
+<!-- 拦截所有非jsp请求 -->
 	<servlet-mapping>
 		<servlet-name>dispatcherservlet</servlet-name>
 		<url-pattern>/</url-pattern>
