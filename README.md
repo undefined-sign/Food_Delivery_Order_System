@@ -65,8 +65,9 @@
 ### 部署步骤
 1. 克隆项目到本地：
    ```bash
- git clone https://github.com/undefined-sign/Food_Delivery_Order_System.git
+    git clone https://github.com/undefined-sign/Food_Delivery_Order_System.git
    ```
+   
 2. **导入数据库脚本**
    - 执行 `sql/` 目录下的数据库脚本，创建系统所需的数据表、视图和触发器。
 
