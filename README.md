@@ -63,18 +63,21 @@
 - Maven 3.6+
 
 ### 部署步骤
+1. 克隆项目到本地：
+   ```bash
+   git clone https://github.com/your-repo/takeout-order-system.git
 
-1. **导入数据库脚本**
+2. **导入数据库脚本**
    - 执行 `sql/` 目录下的数据库脚本，创建系统所需的数据表、视图和触发器。
 
-2. **配置数据库连接**
+3. **配置数据库连接**
    - 修改 `src/main/resources/jdbc.properties` 文件，配置你的 MySQL 数据库连接信息。
 
-3. **使用 Maven 构建项目**
+4. **使用 Maven 构建项目**
    ```bash
    mvn clean package
    ```
 
-4. **部署与运行**
+5. **部署与运行**
    - 将生成的 WAR 包部署至 Tomcat 服务器。
    - 或直接在 IDE（如 Eclipse/IDEA）中配置 Tomcat 并运行项目。
