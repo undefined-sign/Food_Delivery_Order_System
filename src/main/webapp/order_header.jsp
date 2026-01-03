@@ -140,7 +140,7 @@
 						<td>${oh.status == '00' ? '未处理' : (oh.status == '01' ? '已完成' : (oh.status == '10' ? '拒收' : '未知状态'))}</td>
 						
 						
-						<td><a href="order_detail.jsp?&uid=${oh.user_id}&order_id=${oh.order_id }">详情</a></td>
+						<td><a href="order_detail.jsp?uid=${oh.user_id}&order_id=${oh.order_id }">详情</a></td>
 					</tr>
 				
 				</c:forEach>
