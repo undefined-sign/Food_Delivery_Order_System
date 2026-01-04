@@ -105,7 +105,7 @@ public class DishController {
 		//调用service层的添加方法
 		dsi.addDish(dish);
 		
-		return "redirect:dodishes";	
+		return "redirect:towelcome2";	
 	}
 	
 	
