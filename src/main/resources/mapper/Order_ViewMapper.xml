@@ -84,5 +84,12 @@ where orders.STATUS = '00';
     SELECT * FROM order_summary_view WHERE 用户账号=#{uid}
 </select>
 
+<!-- 按照日期查询 -->
+<select id="selectOrdersByDate" resultMap="OrderViewResultMap" >
+
+    SELECT * FROM order_summary_view WHERE 下单日期=#{time}
+</select>
+
+
 	
 </mapper>          

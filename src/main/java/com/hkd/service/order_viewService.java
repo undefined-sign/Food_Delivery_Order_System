@@ -1,5 +1,6 @@
 package com.hkd.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import com.hkd.pojo.order_view;
@@ -10,6 +11,8 @@ public interface order_viewService {
 	public ArrayList<order_view> getAllOrders();
 	//查询未处理订单
 	public ArrayList<order_view> getOrders();
+	//按日期查询
+	public ArrayList<order_view> getOrdersByDate(LocalDate date);
 	//按日期分组查询
 	public ArrayList<order_view>  getOrdersByTime();
 	//按菜品分组查询

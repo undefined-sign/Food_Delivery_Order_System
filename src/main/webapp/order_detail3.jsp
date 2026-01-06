@@ -1,4 +1,12 @@
+<%@page import="java.time.LocalDate"%>
+<%@page import="com.hkd.pojo.order_view"%>
+<%@page import="com.hkd.service.order_viewService"%>
+<%@page import="com.hkd.service.order_detailService"%>
+<%@page import="com.hkd.service.CategoryService"%>
 <%@page language="java" contentType="text/html; charset=utf-8" %>
+<%@page import="com.hkd.service.order_viewServiceImp"%>
+<%@page import="org.springframework.context.support.ClassPathXmlApplicationContext"%>
+<%@page import="org.springframework.context.ApplicationContext" %>
 <%@page import="com.hkd.pojo.Category"%>
 <%@page import="java.util.ArrayList"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -23,10 +31,27 @@
 	line-height: 60px;
 }
 </style>
-
-
 </head>
 <body>
+
+<!-- 按照用户号和订单号进行查询 -->
+<c:if test="${sessionScope.person!=null }">
+<% 
+LocalDate time = LocalDate.parse(request.getParameter("time"));
+
+// 只初始化一次
+ApplicationContext context =
+    new org.springframework.context.support.ClassPathXmlApplicationContext("application_context.xml");
+order_viewService ovs =(order_viewService)context.getBean(order_viewServiceImp.class);
+ArrayList<order_view> odlist = ovs.getOrdersByDate(time);
+session.setAttribute("odlist", odlist);
+%>
+
+</c:if>
+
+
+
+
 	<div class="container">
 		<!--logo-->
 		<div id="logo" class="row">
@@ -53,6 +78,9 @@
 				<li><a href="login.jsp">登陆</a></li>
 				
 				</c:if>	
+
+					<li><a href="car.jsp">购物车</a></li>
+					<li><a href="orderheader?order_header=${'11'} }">订单</a></li>
 				</ul>
 			</div>
 		</div>
@@ -80,34 +108,34 @@
 				
 				<c:if test="${s.count<=5 }">
 				
-				<li><a href="dodishes?Category=${Category.cid }">${Category.name }</a></li>
+				<li><a href="dodishes?Category=${Category.cid }&sign=${1}">${Category.name }</a></li>
 				</c:if>
 				
 				</c:forEach>
 					
 	
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown">功能 <b class="caret"></b></a>
+							data-toggle="dropdown">其他 <b class="caret"></b></a>
 							<ul class="dropdown-menu">
-<!--  商家功能 -->
-				
-								<li><a href="adddish.jsp">添加菜品</a></li>
-								<li><a href="domember?member=''">查看会员</a></li>
-								<li><a href="addmember.jsp">添加会员</a></li>		
-
 							
-							</ul></li>
+							
+							
+					<c:forEach items="${sessionScope.clist }" var="Category" varStatus="s">
+				
+				<c:if test="${s.count>5 }">
+				
+				<li><a href="dodishes?Category=${Category.cid }&sign=${1}">${Category.name }</a></li>
+				</c:if>
+				
+				</c:forEach>
+				
+				
 							
 							</ul></li>
 					</ul>
-<form class="navbar-form navbar-right" action="doorder" method="post">
+						<form class="navbar-form navbar-right" action="dosearch" method="post">
 							<div class="form-group">
-							<select name="type" class="form-control">
-							<option value="1">所有订单统计</option>
-							<option value="2">未完成订单</option>
-							<option value="3">按照日期统计</option>
-							<option value="4">按照菜品统计</option>						
-							</select> 
+								<input type="text" class="form-control" placeholder="Search" name="search">
 							</div>
 							<button type="submit" class="btn btn-default">Submit</button>
 						</form>
@@ -122,32 +150,35 @@
 			<div class="col-md-10 col-md-push-1">
 				<table class="table table-striped">
 					<tr>
-						<td>下单日期</td>
+						<td>订单号</td>
+						<td>菜名</td>
+						<td>单价</td>
+						<td>数量</td>
 						<td>金额</td>
-						<td></td>
-						
+						<td>下单地址</td>
+						<td>下单时间</td>
+						<td>订单状态</td>
 					</tr>
-				<c:forEach items="${sessionScope.ovlist }" var="o">
+				<c:forEach items="${sessionScope.odlist }" var="od">
 				    <tr>
-						<td>${o.time }</td>
-						<td>${o.sum }</td>
-						<td><a href="order_detail3.jsp?time=${o.time}">详情</a></td>
+						<td>${od.order_id }</td>
+						<td>${od.dish_name}</td>
+						<td>${od.price}</td>
+						<td>${od.num }</td>
+						<td>${od.sum }</td>	
+						<td>${od.address }</td>
+						<td>${od.time }</td>
+						<td>${od.status == '00' ? '未处理' : (od.status == '01' ? '已完成' : (od.status == '10' ? '拒收' : '未知状态'))}</td>						
 					</tr>
+				
 				</c:forEach>
 				</table>
 				<ul class="pagination">
-				
-				<c:if test="${sessionScope.pageno!=null }">
-				
-					<li><a href="doorder?flag=up">上一页</a></li>
-					
-					<li><a href="doorder?flag=down">下一页</a></li>
-				</c:if>
 					
 				</ul>
 			</div>
 		</div>
-		<!--版权部分--><br><br><br><br>
+		<!--版权部分--><br><br><br><br><br><br>
 		<div>
 
 			<div align="center">

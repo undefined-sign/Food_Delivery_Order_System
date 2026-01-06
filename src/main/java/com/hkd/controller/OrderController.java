@@ -71,7 +71,7 @@ public class OrderController {
 	        	String formatted = df.format(c.getPrice()*member.getDiscount_rate());
 				od.setPrice(Double.parseDouble(formatted));
 				//更新积分
-				msi.updatePoints(member.getNumber(),Double.parseDouble(formatted) );
+				msi.updatePoints(member.getNumber(),Double.parseDouble(formatted)*c.getNum());
 
 				}else {
 

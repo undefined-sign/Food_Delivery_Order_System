@@ -33,7 +33,7 @@
 </head>
 <body>
 
-<!-- 按照员工号和订单号进行查询 -->
+<!-- 按照用户号和订单号进行查询 -->
 <c:if test="${sessionScope.person!=null }">
 <% 
 int uid=Integer.parseInt(request.getParameter("uid")) ;

@@ -1,5 +1,6 @@
 package com.hkd.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,12 @@ public class order_viewServiceImp implements order_viewService {
 	public ArrayList<order_view> getOrdersByUid(int uid) {
 		// TODO Auto-generated method stub
 		return ovm.selectOrdersByUid2(uid);
+	}
+
+	@Override
+	public ArrayList<order_view> getOrdersByDate(LocalDate date) {
+		// TODO Auto-generated method stub
+		return ovm.selectOrdersByDate(date);
 	}
 
 }
